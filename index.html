@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SYSTEM_RESTORE</title>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        
+        /* Vídeo de fundo forçado */
+        #bg-video {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; filter: brightness(0.3);
+        }
+
+        .interface {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; color: #00ff00; font-family: monospace;
+        }
+
+        #jogo-container { width: 800px; height: 600px; border: 2px solid #ff0000; display: none; }
+        
+        button { 
+            background: transparent; color: #ff0000; border: 2px solid #ff0000; 
+            padding: 20px 40px; cursor: pointer; font-size: 30px; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="Rayman & Globox having some friendly conversation.mp4" type="video/mp4">
+    </video>
+
+    <div class="interface">
+        <h1 id="texto">>> UM MINIJOGO DO SENHOR RAMON FOI ENCONTRADO.<br> SEU AMIGO GLOBOX VAI VOAR.</h1>
+        <button id="btn-iniciar" onclick="iniciarTudo()">?</button>
+        <div id="jogo-container"></div>
+    </div>
+
+    <script>
+        function iniciarTudo() {
+            // Esconde o texto e botão
+            document.getElementById('texto').style.display = 'none';
+            document.getElementById('btn-iniciar').style.display = 'none';
+            
+            // Mostra o container
+            document.getElementById('jogo-container').style.display = 'block';
+
+            // Carrega o Ruffle
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("jogo-container");
+            container.appendChild(player);
+            
+            // Carrega o arquivo local
+            player.load("slap_flap_go.swf");
+        }
+    </script>
+</body>
+</html>
