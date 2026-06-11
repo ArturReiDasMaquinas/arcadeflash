@@ -2,29 +2,35 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>SYSTEM_RESTORE</title>
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
         
-        /* Vídeo de fundo forçado */
+        /* Vídeo de Fundo */
         #bg-video {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             object-fit: cover; z-index: -1; filter: brightness(0.3);
         }
 
         .interface {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; color: #00ff00; font-family: monospace;
+            height: 100vh; color: #00ff00; font-family: monospace; text-align: center;
         }
 
-        #jogo-container { width: 800px; height: 600px; border: 2px solid #ff0000; display: none; }
-        
+        /* Borda do Jogo */
+        #jogo-container { 
+            width: 800px; height: 600px; border: 4px solid #ff0000; 
+            display: none; background: #000;
+        }
+
+        /* Força o Ruffle a preencher a borda */
+        #jogo-container ruffle-player { width: 100%; height: 100%; }
+
         button { 
             background: transparent; color: #ff0000; border: 2px solid #ff0000; 
-            padding: 20px 40px; cursor: pointer; font-size: 30px; margin-top: 20px;
+            padding: 20px 40px; cursor: pointer; font-size: 40px; margin-top: 20px;
         }
     </style>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
 <body>
 
@@ -40,20 +46,13 @@
 
     <script>
         function iniciarTudo() {
-            // Esconde o texto e botão
             document.getElementById('texto').style.display = 'none';
             document.getElementById('btn-iniciar').style.display = 'none';
-            
-            // Mostra o container
             document.getElementById('jogo-container').style.display = 'block';
-
-            // Carrega o Ruffle
+            
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
-            const container = document.getElementById("jogo-container");
-            container.appendChild(player);
-            
-            // Carrega o arquivo local
+            document.getElementById("jogo-container").appendChild(player);
             player.load("slap_flap_go.swf");
         }
     </script>
