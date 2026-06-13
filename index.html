@@ -124,7 +124,6 @@
         <h2>Flash Archive</h2>
         
         <div class="category-title">🎮 Jogos Clássicos</div>
-        <button class="game-btn" onclick="playGame('flash/isaac.swf')">The Binding of Isaac</button>
         <button class="game-btn" onclick="playGame('flash/alienhominidflashver.swf')">Alien Hominid</button>
         <button class="game-btn" onclick="playGame('flash/slap_flap_go.swf')">Rayman: Slap, Flap & Go!</button>
 
@@ -153,41 +152,40 @@
     </div>
 
     <script>
-        // Inicializa o motor do Ruffle
         const ruffle = window.RufflePlayer.newest();
         const container = document.getElementById('player-container');
         const controls = document.getElementById('controls');
         let activePlayer = null;
 
         function playGame(swfUrl) {
-            // Garante a destruição total do Flash anterior (limpa cache de áudio e tela)
             closeGame();
 
-            // Instancia o novo player do Ruffle
-            activePlayer = ruffle.createPlayer();
-            container.innerHTML = ''; 
-            container.appendChild(activePlayer);
+            // Mensagem amigável enquanto o arquivo é baixado
+            container.innerHTML = '<div id="placeholder-text" style="color: #ffcc00;">📥 Baixando e inicializando conteúdo...<br><span style="font-size: 0.85rem; color: #888;">Por favor, aguarde alguns instantes.</span></div>';
 
-            // Ajusta o comportamento de tela cheia dentro da div
-            activePlayer.style.width = "100%";
-            activePlayer.style.height = "100%";
-            
-            // Carrega o arquivo solicitado
-            activePlayer.load({
-                url: swfUrl,
-                allowScriptAccess: false
-            });
+            // Pequena folga para renderizar o texto antes do carregamento do arquivo
+            setTimeout(() => {
+                activePlayer = ruffle.createPlayer();
+                container.innerHTML = ''; 
+                container.appendChild(activePlayer);
 
-            // Exibe o botão de controle
-            controls.style.display = 'block';
+                activePlayer.style.width = "100%";
+                activePlayer.style.height = "100%";
+                
+                activePlayer.load({
+                    url: swfUrl,
+                    allowScriptAccess: false
+                });
+
+                controls.style.display = 'block';
+            }, 100);
         }
 
         function closeGame() {
             if (activePlayer) {
-                activePlayer.remove(); // Remove o elemento do DOM, matando processos e áudios instantaneamente
+                activePlayer.remove(); 
                 activePlayer = null;
             }
-            // Reseta para a tela inicial neutra
             container.innerHTML = '<div id="placeholder-text">Selecione um jogo ou animação<br>no menu lateral para iniciar.</div>';
             controls.style.display = 'none';
         }
